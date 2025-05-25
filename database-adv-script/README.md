@@ -38,3 +38,38 @@ FROM
 properties p
 LEFT JOIN
 reviews r ON p.id = r.property_id;
+
+# Subqueries – Airbnb Database Project
+
+This section of the project focuses on mastering subqueries in SQL. You will learn to use both correlated and non-correlated subqueries to retrieve data based on calculations and nested logic.
+
+## ✅ Task Objectives
+
+- Use a non-correlated subquery to find high-rated properties.
+- Use a correlated subquery to find users with more than 3 bookings.
+
+## 🔍 Queries Overview
+
+### 1. Non-Correlated Subquery – High-Rated Properties
+
+```sql
+SELECT id, name
+FROM properties
+WHERE id IN (
+    SELECT property_id
+    FROM reviews
+    GROUP BY property_id
+    HAVING AVG(rating) > 4.0
+)
+ORDER BY id;
+
+```
+
+SELECT id, first_name, last_name
+FROM users u
+WHERE (
+SELECT COUNT(\*)
+FROM bookings b
+WHERE b.user_id = u.id
+) > 3
+ORDER BY id;
