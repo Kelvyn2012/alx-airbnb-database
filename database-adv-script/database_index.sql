@@ -1,14 +1,15 @@
--- Index on users.id (often joined with bookings.user_id)
+-- Create indexes
 CREATE INDEX idx_users_id ON users(id);
-
--- Index on bookings.user_id (used in joins and filters)
 CREATE INDEX idx_bookings_user_id ON bookings(user_id);
-
--- Index on bookings.property_id (used in joins with properties)
 CREATE INDEX idx_bookings_property_id ON bookings(property_id);
-
--- Index on bookings.start_date (useful for filtering by date range)
 CREATE INDEX idx_bookings_start_date ON bookings(start_date);
-
--- Index on properties.id (used in joins with bookings and reviews)
 CREATE INDEX idx_properties_id ON properties(id);
+
+-- Use EXPLAIN ANALYZE to check performance
+EXPLAIN ANALYZE
+SELECT b.id, u.first_name, p.name
+FROM bookings b
+JOIN users u ON b.user_id = u.id
+JOIN properties p ON b.property_id = p.id
+WHERE b.start_date >= '2024-01-01'
+ORDER BY b.start_date DESC;
