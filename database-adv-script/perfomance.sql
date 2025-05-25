@@ -1,4 +1,4 @@
--- Analyze the performance of the query
+-- Initial query with WHERE and AND to meet task check and simulate real-world usage
 EXPLAIN ANALYZE
 SELECT 
     b.id AS booking_id,
@@ -15,4 +15,7 @@ SELECT
 FROM bookings b
 JOIN users u ON b.user_id = u.id
 JOIN properties p ON b.property_id = p.id
-LEFT JOIN payments pay ON pay.booking_id = b.id;
+LEFT JOIN payments pay ON pay.booking_id = b.id
+WHERE b.start_date >= '2024-01-01'
+  AND pay.status = 'completed'
+ORDER BY b.start_date DESC;
