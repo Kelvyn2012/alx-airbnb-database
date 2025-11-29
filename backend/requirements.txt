@@ -1,0 +1,56 @@
+# Core Django
+Django==5.2.8
+djangorestframework==3.14.0
+django-cors-headers==4.3.0
+django-filter==23.3
+
+# Authentication & Security
+djangorestframework-simplejwt==5.3.0
+PyJWT==2.10.1
+django-allauth==65.13.1
+social-auth-app-django==5.6.0
+social-auth-core==4.8.1
+oauthlib==3.3.1
+requests-oauthlib==2.0.0
+python3-openid==3.2.0
+cryptography==46.0.3
+
+# WebSocket Support (Channels)
+channels==4.0.0
+channels-redis==4.1.0
+redis==7.1.0
+
+# API Documentation
+drf-yasg==1.21.7
+
+# Environment & Configuration
+python-decouple==3.8
+
+# Image Processing
+pillow==12.0.0
+
+# Payment Processing
+stripe==7.4.0
+
+# HTTP Requests
+requests==2.32.5
+urllib3==2.5.0
+certifi==2025.11.12
+
+# Utilities
+pytz==2025.2
+sqlparse==0.5.4
+defusedxml==0.7.1
+inflection==0.5.1
+msgpack==1.1.2
+packaging==25.0
+
+# Dependencies
+asgiref==3.11.0
+cffi==2.0.0
+pycparser==2.23
+charset-normalizer==3.4.4
+idna==3.11
+typing_extensions==4.15.0
+uritemplate==4.2.0
+PyYAML==6.0.3
