@@ -1,0 +1,10 @@
+#!/bin/bash
+
+# Install dependencies
+pip install -r requirements.txt
+
+# Collect static files
+python3.12 manage.py collectstatic --noinput --clear
+
+# Run migrations (optional - remove if you want to run manually)
+# python3.12 manage.py migrate --noinput

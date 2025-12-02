@@ -4,6 +4,13 @@ djangorestframework==3.14.0
 django-cors-headers==4.3.0
 django-filter==23.3
 
+# Database
+psycopg2-binary==2.9.9
+dj-database-url==2.1.0
+
+# Static files serving
+whitenoise==6.6.0
+
 # Authentication & Security
 djangorestframework-simplejwt==5.3.0
 PyJWT==2.10.1
