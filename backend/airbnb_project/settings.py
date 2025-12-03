@@ -12,11 +12,12 @@ DEBUG = config('DEBUG', default=True, cast=bool)
 
 ALLOWED_HOSTS = config('ALLOWED_HOSTS', default='localhost,127.0.0.1').split(',')
 
-# Add your Vercel deployment domain when available
+# Add deployment domains
 if not DEBUG:
     ALLOWED_HOSTS.extend([
         '.vercel.app',
         '.neon.tech',
+        '.onrender.com',  # Render deployment
     ])
 
 # Application definition
@@ -215,11 +216,14 @@ if not DEBUG:
     SECURE_HSTS_PRELOAD = True
 
 # Channels
+# Use Redis URL from environment (for Render) or default to localhost
+REDIS_URL = config('REDIS_URL', default='redis://127.0.0.1:6379')
+
 CHANNEL_LAYERS = {
     'default': {
         'BACKEND': 'channels_redis.core.RedisChannelLayer',
         'CONFIG': {
-            "hosts": [('127.0.0.1', 6379)],
+            "hosts": [REDIS_URL] if REDIS_URL.startswith('redis://') or REDIS_URL.startswith('rediss://') else [('127.0.0.1', 6379)],
         },
     },
 }
