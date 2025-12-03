@@ -1,6 +1,12 @@
 # ==============================================================================
 # Airbnb Clone Backend - Complete Dependencies
 # ==============================================================================
+#
+# IMPORTANT: This project is compatible with Python 3.10, 3.11, and 3.12
+# Python 3.14+ is not yet supported by all dependencies (especially psycopg2)
+#
+# Recommended Python Version: 3.12
+# ==============================================================================
 
 # Core Django Framework
 Django==5.2.8
@@ -9,6 +15,8 @@ django-cors-headers==4.3.0
 django-filter==23.3
 
 # Database & ORM
+# Note: psycopg2-binary 2.9.9 works with Python 3.10-3.12
+# For Python 3.13+, you may need to use psycopg (psycopg3) or wait for updates
 psycopg2-binary==2.9.9
 dj-database-url==2.1.0
 
