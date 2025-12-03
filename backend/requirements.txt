@@ -1,15 +1,20 @@
-# Core Django
+# ==============================================================================
+# Airbnb Clone Backend - Complete Dependencies
+# ==============================================================================
+
+# Core Django Framework
 Django==5.2.8
 djangorestframework==3.14.0
 django-cors-headers==4.3.0
 django-filter==23.3
 
-# Database
+# Database & ORM
 psycopg2-binary==2.9.9
 dj-database-url==2.1.0
 
-# Static files serving
+# Static & Media Files
 whitenoise==6.6.0
+pillow==12.0.0
 
 # Authentication & Security
 djangorestframework-simplejwt==5.3.0
@@ -22,7 +27,7 @@ requests-oauthlib==2.0.0
 python3-openid==3.2.0
 cryptography==46.0.3
 
-# WebSocket Support (Channels)
+# WebSocket Support (Real-time messaging)
 channels==4.0.0
 channels-redis==4.1.0
 redis==7.1.0
@@ -33,31 +38,109 @@ drf-yasg==1.21.7
 # Environment & Configuration
 python-decouple==3.8
 
-# Image Processing
-pillow==12.0.0
-
 # Payment Processing
 stripe==7.4.0
 
-# HTTP Requests
+# HTTP Requests & Networking
 requests==2.32.5
 urllib3==2.5.0
 certifi==2025.11.12
-
-# Utilities
-pytz==2025.2
-sqlparse==0.5.4
-defusedxml==0.7.1
-inflection==0.5.1
-msgpack==1.1.2
-packaging==25.0
-
-# Dependencies
-asgiref==3.11.0
-cffi==2.0.0
-pycparser==2.23
 charset-normalizer==3.4.4
 idna==3.11
+
+# Date & Time
+pytz==2025.2
+
+# Data Serialization & Validation
+PyYAML==6.0.3
+msgpack==1.1.2
+inflection==0.5.1
+
+# Security & Parsing
+defusedxml==0.7.1
+sqlparse==0.5.4
+
+# ASGI Support
+asgiref==3.11.0
+
+# Low-level Dependencies
+cffi==2.0.0
+pycparser==2.23
+packaging==25.0
 typing_extensions==4.15.0
 uritemplate==4.2.0
-PyYAML==6.0.3
+
+# Build Tools (optional, but recommended)
+setuptools==80.9.0
+wheel==0.45.1
+
+# ==============================================================================
+# Installation Instructions
+# ==============================================================================
+#
+# 1. Create a virtual environment:
+#    python -m venv venv
+#
+# 2. Activate the virtual environment:
+#    - macOS/Linux: source venv/bin/activate
+#    - Windows: venv\Scripts\activate
+#
+# 3. Install all dependencies:
+#    pip install -r requirements.txt
+#
+# 4. Set up environment variables:
+#    - Copy .env.example to .env
+#    - Fill in your database credentials and API keys
+#
+# 5. Run migrations:
+#    python manage.py migrate
+#
+# 6. Create superuser:
+#    python manage.py createsuperuser
+#
+# 7. Run the development server:
+#    python manage.py runserver
+#
+# ==============================================================================
+# Production Deployment
+# ==============================================================================
+#
+# For production (Vercel/Railway/Heroku), ensure these environment variables:
+# - SECRET_KEY
+# - DEBUG=False
+# - DATABASE_URL
+# - ALLOWED_HOSTS
+# - STRIPE_PUBLIC_KEY
+# - STRIPE_SECRET_KEY
+# - GOOGLE_OAUTH2_CLIENT_ID
+# - GOOGLE_OAUTH2_CLIENT_SECRET
+# - FACEBOOK_APP_ID
+# - FACEBOOK_APP_SECRET
+#
+# ==============================================================================
+
+# ==============================================================================
+# Package Summary
+# ==============================================================================
+#
+# Total Packages: 43
+#
+# Core Framework (4):
+#   - Django, DRF, CORS, Filters
+#
+# Authentication (9):
+#   - JWT, OAuth2, Social Auth, Allauth
+#
+# Database (2):
+#   - PostgreSQL driver, URL parser
+#
+# Real-time (3):
+#   - Channels, Redis for WebSocket
+#
+# APIs & Services (2):
+#   - Stripe payments, API docs
+#
+# Utilities (23):
+#   - Static files, images, security, networking, serialization
+#
+# ==============================================================================
