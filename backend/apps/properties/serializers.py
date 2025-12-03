@@ -54,8 +54,9 @@ class PropertySerializer(serializers.ModelSerializer):
 class PropertyCreateSerializer(serializers.ModelSerializer):
     class Meta:
         model = Property
-        fields = ['name', 'description', 'location', 'pricepernight',
+        fields = ['property_id', 'name', 'description', 'location', 'pricepernight',
                   'bedrooms', 'bathrooms', 'max_guests', 'amenities']
+        read_only_fields = ['property_id']
 
 
 class PropertyListSerializer(serializers.ModelSerializer):

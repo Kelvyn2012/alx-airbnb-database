@@ -144,14 +144,14 @@ def main():
 
     # Create property (requires auth)
     property_data = {
-        "title": "Beautiful Beach House",
+        "name": "Beautiful Beach House",
         "description": "A stunning beachfront property with amazing views",
-        "price_per_night": 150.00,
+        "pricepernight": 150.00,
         "location": "Miami Beach, FL",
         "bedrooms": 3,
         "bathrooms": 2,
         "max_guests": 6,
-        "amenities": ["wifi", "pool", "parking"]
+        "amenities": "wifi,pool,parking"
     }
     response = test_endpoint("POST", "/api/properties/create/", 401 if not auth_token else 201, property_data, auth=True)
 
