@@ -17,8 +17,10 @@ if not DEBUG:
     ALLOWED_HOSTS.extend([
         '.vercel.app',
         '.neon.tech',
-        '.onrender.com',  # Render deployment
+        '.render.com',
+        'alx-airbnb-clone.onrender.com',  # Render deployment
     ])
+
 
 # Application definition
 INSTALLED_APPS = [
@@ -183,13 +185,13 @@ SIMPLE_JWT = {
 }
 
 # CORS settings
-CORS_ALLOWED_ORIGINS = config(
-    'CORS_ALLOWED_ORIGINS',
-    default='http://localhost:3000,http://127.0.0.1:3000,http://localhost:3001,http://127.0.0.1:3001'
-).split(',')
-
-# In production, add your Vercel frontend URL
-# Example: https://your-app.vercel.app
+# Strip trailing slashes from origins to avoid CORS errors
+CORS_ALLOWED_ORIGINS = [
+    origin.rstrip('/') for origin in config(
+        'CORS_ALLOWED_ORIGINS',
+        default='http://localhost:3000,http://127.0.0.1:3000,http://localhost:3001,https://airbnb-no7gc9zsh-kelvyn2012s-projects.vercel.app'
+    ).split(',')
+]
 
 CORS_ALLOW_CREDENTIALS = True
 CORS_ALLOW_HEADERS = [
@@ -235,8 +237,9 @@ STRIPE_SECRET_KEY = config('STRIPE_SECRET_KEY', default='')
 # Django Allauth settings
 SITE_ID = 1
 ACCOUNT_EMAIL_VERIFICATION = 'none'
-ACCOUNT_AUTHENTICATION_METHOD = 'email'
-ACCOUNT_EMAIL_REQUIRED = True
+# Updated for django-allauth 65.13.1+ (new settings format)
+ACCOUNT_LOGIN_METHODS = {'email'}
+ACCOUNT_SIGNUP_FIELDS = ['email*', 'username*', 'password1*', 'password2*']
 ACCOUNT_UNIQUE_EMAIL = True
 LOGIN_REDIRECT_URL = 'http://localhost:3001/'
 ACCOUNT_LOGOUT_REDIRECT_URL = 'http://localhost:3001/'
