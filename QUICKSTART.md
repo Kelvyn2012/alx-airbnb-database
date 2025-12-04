@@ -5,7 +5,7 @@ Get the Airbnb Clone running in 5 minutes!
 ## Prerequisites Check
 
 Make sure you have:
-- ✅ Python 3.8+ installed (`python --version`)
+- ✅ Python 12.x + installed (`python --version`)
 - ✅ Node.js 14+ installed (`node --version`)
 - ✅ PostgreSQL running
 - ✅ Redis running (optional, for messaging)
