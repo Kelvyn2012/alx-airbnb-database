@@ -204,7 +204,7 @@ SIMPLE_JWT = {
 CORS_ALLOWED_ORIGINS = [
     origin.rstrip('/') for origin in config(
         'CORS_ALLOWED_ORIGINS',
-        default='http://localhost:3000,http://127.0.0.1:3000,http://localhost:3001,https://airbnb-no7gc9zsh-kelvyn2012s-projects.vercel.app'
+        default='http://localhost:3000,https://airbnb-no7gc9zsh-kelvyn2012s-projects.vercel.app'
     ).split(',')
 ]
 

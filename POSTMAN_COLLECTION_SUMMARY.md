@@ -1,24 +1,4 @@
-# Postman Collection Summary
-
-## ✅ Completed
-
-I've created a comprehensive Postman collection for testing your Airbnb Clone API with all necessary files and documentation.
-
-## 📦 Files Created
-
-All files are located in the `backend/` folder:
-
-### 1. Postman Collection Files
-- **Airbnb_API.postman_collection.json** - Complete API collection with 40+ requests
-- **Airbnb_Local.postman_environment.json** - Local development environment
-- **Airbnb_Production.postman_environment.json** - Production environment for Vercel
-
-### 2. Documentation Files
-- **POSTMAN_README.md** - Quick start guide
-- **POSTMAN_TESTING_GUIDE.md** - Comprehensive testing guide with workflows
-- **API_ENDPOINTS_REFERENCE.md** - Quick reference for all API endpoints
-
-## 🎯 Collection Features
+##  Collection Features
 
 ### Complete Coverage
 The collection includes **40+ requests** organized in **9 folders**:
@@ -62,23 +42,23 @@ The collection includes **40+ requests** organized in **9 folders**:
 
 ### Smart Automation
 
-✅ **Auto-Save Tokens**
+ **Auto-Save Tokens**
 - Login/Register automatically saves access_token
 - No manual copy-paste needed
 
-✅ **Auto-Save Resource IDs**
+ **Auto-Save Resource IDs**
 - Created resources (properties, bookings, etc.) IDs are auto-saved
 - Use `{{property_id}}`, `{{booking_id}}`, etc. in subsequent requests
 
-✅ **Built-in Authentication**
+ **Built-in Authentication**
 - Collection-level Bearer Token auth
 - Works across all authenticated endpoints
 
-✅ **Environment Variables**
+ **Environment Variables**
 - Easy switching between local and production
 - All variables pre-configured
 
-## 🚀 How to Use
+##  How to Use
 
 ### Step 1: Import Collection
 
