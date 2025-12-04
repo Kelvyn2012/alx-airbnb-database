@@ -173,6 +173,21 @@ REST_FRAMEWORK = {
     ),
 }
 
+# Swagger settings
+SWAGGER_SETTINGS = {
+    'SECURITY_DEFINITIONS': {
+        'Bearer': {
+            'type': 'apiKey',
+            'name': 'Authorization',
+            'in': 'header',
+            'description': 'JWT Authorization header using the Bearer scheme. Example: "Bearer {token}"'
+        }
+    },
+    'USE_SESSION_AUTH': False,
+    'JSON_EDITOR': True,
+    'SUPPORTED_SUBMIT_METHODS': ['get', 'post', 'put', 'delete', 'patch'],
+}
+
 # JWT settings
 SIMPLE_JWT = {
     'ACCESS_TOKEN_LIFETIME': timedelta(hours=1),
@@ -206,6 +221,14 @@ CORS_ALLOW_HEADERS = [
     'x-requested-with',
 ]
 
+# CSRF trusted origins for production
+CSRF_TRUSTED_ORIGINS = [
+    origin for origin in config(
+        'CSRF_TRUSTED_ORIGINS',
+        default='https://alx-airbnb-clone.onrender.com,https://airbnb-no7gc9zsh-kelvyn2012s-projects.vercel.app'
+    ).split(',')
+]
+
 # Security settings for production
 if not DEBUG:
     SECURE_SSL_REDIRECT = True
@@ -216,6 +239,7 @@ if not DEBUG:
     SECURE_HSTS_SECONDS = 31536000
     SECURE_HSTS_INCLUDE_SUBDOMAINS = True
     SECURE_HSTS_PRELOAD = True
+    X_FRAME_OPTIONS = 'DENY'
 
 # Channels
 # Use Redis URL from environment (for Render) or default to localhost
@@ -241,8 +265,10 @@ ACCOUNT_EMAIL_VERIFICATION = 'none'
 ACCOUNT_LOGIN_METHODS = {'email'}
 ACCOUNT_SIGNUP_FIELDS = ['email*', 'username*', 'password1*', 'password2*']
 ACCOUNT_UNIQUE_EMAIL = True
-LOGIN_REDIRECT_URL = 'http://localhost:3001/'
-ACCOUNT_LOGOUT_REDIRECT_URL = 'http://localhost:3001/'
+# Dynamic redirect URLs based on environment
+FRONTEND_URL = config('FRONTEND_URL', default='http://localhost:3001')
+LOGIN_REDIRECT_URL = f'{FRONTEND_URL}/'
+ACCOUNT_LOGOUT_REDIRECT_URL = f'{FRONTEND_URL}/'
 
 # Social authentication backends
 AUTHENTICATION_BACKENDS = [
@@ -258,9 +284,10 @@ SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET = config('GOOGLE_OAUTH2_CLIENT_SECRET', default
 SOCIAL_AUTH_FACEBOOK_KEY = config('FACEBOOK_APP_ID', default='')
 SOCIAL_AUTH_FACEBOOK_SECRET = config('FACEBOOK_APP_SECRET', default='')
 
-# Social auth redirect URIs
-SOCIAL_AUTH_GOOGLE_OAUTH2_REDIRECT_URI = 'http://localhost:8001/api/auth/google/callback/'
-SOCIAL_AUTH_FACEBOOK_REDIRECT_URI = 'http://localhost:8001/api/auth/facebook/callback/'
+# Social auth redirect URIs - dynamic based on environment
+BACKEND_URL = config('BACKEND_URL', default='http://localhost:8001')
+SOCIAL_AUTH_GOOGLE_OAUTH2_REDIRECT_URI = f'{BACKEND_URL}/api/auth/google/callback/'
+SOCIAL_AUTH_FACEBOOK_REDIRECT_URI = f'{BACKEND_URL}/api/auth/facebook/callback/'
 
 # Allauth providers
 SOCIALACCOUNT_PROVIDERS = {
