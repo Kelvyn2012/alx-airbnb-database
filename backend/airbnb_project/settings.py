@@ -201,11 +201,17 @@ SIMPLE_JWT = {
 
 # CORS settings
 # Strip trailing slashes from origins to avoid CORS errors
+# CORS settings
 CORS_ALLOWED_ORIGINS = [
     origin.rstrip('/') for origin in config(
         'CORS_ALLOWED_ORIGINS',
-        default='https://airbnb-no7gc9zsh-kelvyn2012s-projects.vercel.app,http://localhost:3000'
+        default='http://localhost:3000,http://localhost:3001'
     ).split(',')
+]
+
+# Additionally, allow all Vercel preview deployments
+CORS_ALLOWED_ORIGIN_REGEXES = [
+    r"^https://.*\.vercel\.app$",
 ]
 
 CORS_ALLOW_CREDENTIALS = True
