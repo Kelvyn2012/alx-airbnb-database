@@ -143,7 +143,7 @@ python manage.py createsuperuser
 python manage.py runserver
 ```
 
-The backend API will be available at `http://localhost:8000`
+The backend API will be available at `http://localhost:8000,https://alx-airbnb-clone.onrender.com/swagger`
 
 ### Frontend Setup
 
@@ -168,7 +168,7 @@ echo "REACT_APP_API_URL=http://localhost:8000" > .env
 npm start
 ```
 
-The frontend will be available at `http://localhost:3000`
+The frontend will be available at `http://localhost:3000,https://airbnb-85q3sc8js-kelvyn2012s-projects.vercel.app/`
 
 ### Redis Setup (for real-time messaging)
 
