@@ -209,9 +209,9 @@ CORS_ALLOWED_ORIGINS = [
     ).split(',')
 ]
 
-# Additionally, allow all Vercel preview deployments
+# Allow all Vercel preview deployments automatically
 CORS_ALLOWED_ORIGIN_REGEXES = [
-    r"^https://.*\.vercel\.app$",
+    r"^https://.*\.vercel\.app$",  # Matches all *.vercel.app domains
 ]
 
 CORS_ALLOW_CREDENTIALS = True
@@ -236,12 +236,20 @@ CORS_ALLOW_HEADERS = [
 ]
 
 # CSRF trusted origins for production
+# Also need to allow Vercel domains here
 CSRF_TRUSTED_ORIGINS = [
     origin for origin in config(
         'CSRF_TRUSTED_ORIGINS',
-        default='https://alx-airbnb-clone.onrender.com,https://airbnb-no7gc9zsh-kelvyn2012s-projects.vercel.app'
+        default='https://alx-airbnb-clone.onrender.com'
     ).split(',')
 ]
+
+# Add regex pattern for all Vercel domains in CSRF too
+import re
+CSRF_TRUSTED_ORIGINS.extend([
+    'https://airbnb-85q3sc8js-kelvyn2012s-projects.vercel.app',
+    'https://airbnb-no7gc9zsh-kelvyn2012s-projects.vercel.app',
+])
 
 # Security settings for production
 if not DEBUG:
