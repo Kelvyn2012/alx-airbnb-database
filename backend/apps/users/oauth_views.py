@@ -4,15 +4,18 @@ from rest_framework.response import Response
 from rest_framework import status
 from rest_framework_simplejwt.tokens import RefreshToken
 from django.contrib.auth import get_user_model
+from django.conf import settings
 from django.shortcuts import redirect
 import requests
 from decouple import config
 
 User = get_user_model()
 
+BACKEND_URL = settings.BACKEND_URL
+FRONTEND_URL = settings.FRONTEND_URL
+
 
 def get_tokens_for_user(user):
-    """Generate JWT tokens for user"""
     refresh = RefreshToken.for_user(user)
     return {
         'refresh': str(refresh),
@@ -25,7 +28,7 @@ def get_tokens_for_user(user):
 def google_login(request):
     """Initiate Google OAuth login"""
     google_client_id = config('GOOGLE_OAUTH2_CLIENT_ID', default='')
-    redirect_uri = 'http://localhost:8001/api/auth/google/callback/'
+    redirect_uri = f'{BACKEND_URL}/api/users/auth/google/callback/'
     scope = 'openid email profile'
 
     google_auth_url = (
@@ -46,15 +49,15 @@ def google_callback(request):
     code = request.GET.get('code')
 
     if not code:
-        return redirect('http://localhost:3001/login?error=oauth_failed')
+        return redirect(f'{FRONTEND_URL}/login?error=oauth_failed')
 
-    # Exchange code for access token
+    redirect_uri = f'{BACKEND_URL}/api/users/auth/google/callback/'
     token_url = 'https://oauth2.googleapis.com/token'
     data = {
         'code': code,
         'client_id': config('GOOGLE_OAUTH2_CLIENT_ID', default=''),
         'client_secret': config('GOOGLE_OAUTH2_CLIENT_SECRET', default=''),
-        'redirect_uri': 'http://localhost:8001/api/auth/google/callback/',
+        'redirect_uri': redirect_uri,
         'grant_type': 'authorization_code',
     }
 
@@ -63,15 +66,13 @@ def google_callback(request):
     access_token = token_json.get('access_token')
 
     if not access_token:
-        return redirect('http://localhost:3001/login?error=oauth_failed')
+        return redirect(f'{FRONTEND_URL}/login?error=oauth_failed')
 
-    # Get user info from Google
     user_info_url = 'https://www.googleapis.com/oauth2/v2/userinfo'
     headers = {'Authorization': f'Bearer {access_token}'}
     user_info_response = requests.get(user_info_url, headers=headers)
     user_info = user_info_response.json()
 
-    # Create or get user
     email = user_info.get('email')
     first_name = user_info.get('given_name', '')
     last_name = user_info.get('family_name', '')
@@ -85,12 +86,8 @@ def google_callback(request):
         }
     )
 
-    # Generate JWT tokens
     tokens = get_tokens_for_user(user)
-
-    # Redirect to frontend with tokens
-    redirect_url = f"http://localhost:3001/oauth-callback?access={tokens['access']}&refresh={tokens['refresh']}"
-    return redirect(redirect_url)
+    return redirect(f"{FRONTEND_URL}/oauth-callback?access={tokens['access']}&refresh={tokens['refresh']}")
 
 
 @api_view(['GET'])
@@ -98,7 +95,7 @@ def google_callback(request):
 def facebook_login(request):
     """Initiate Facebook OAuth login"""
     facebook_app_id = config('FACEBOOK_APP_ID', default='')
-    redirect_uri = 'http://localhost:8001/api/auth/facebook/callback/'
+    redirect_uri = f'{BACKEND_URL}/api/users/auth/facebook/callback/'
     scope = 'email,public_profile'
 
     facebook_auth_url = (
@@ -118,15 +115,15 @@ def facebook_callback(request):
     code = request.GET.get('code')
 
     if not code:
-        return redirect('http://localhost:3001/login?error=oauth_failed')
+        return redirect(f'{FRONTEND_URL}/login?error=oauth_failed')
 
-    # Exchange code for access token
+    redirect_uri = f'{BACKEND_URL}/api/users/auth/facebook/callback/'
     token_url = 'https://graph.facebook.com/v13.0/oauth/access_token'
     params = {
         'code': code,
         'client_id': config('FACEBOOK_APP_ID', default=''),
         'client_secret': config('FACEBOOK_APP_SECRET', default=''),
-        'redirect_uri': 'http://localhost:8001/api/auth/facebook/callback/',
+        'redirect_uri': redirect_uri,
     }
 
     token_response = requests.get(token_url, params=params)
@@ -134,9 +131,8 @@ def facebook_callback(request):
     access_token = token_json.get('access_token')
 
     if not access_token:
-        return redirect('http://localhost:3001/login?error=oauth_failed')
+        return redirect(f'{FRONTEND_URL}/login?error=oauth_failed')
 
-    # Get user info from Facebook
     user_info_url = 'https://graph.facebook.com/me'
     params = {
         'fields': 'id,email,first_name,last_name',
@@ -145,10 +141,9 @@ def facebook_callback(request):
     user_info_response = requests.get(user_info_url, params=params)
     user_info = user_info_response.json()
 
-    # Create or get user
     email = user_info.get('email')
     if not email:
-        return redirect('http://localhost:3001/login?error=no_email')
+        return redirect(f'{FRONTEND_URL}/login?error=no_email')
 
     first_name = user_info.get('first_name', '')
     last_name = user_info.get('last_name', '')
@@ -162,9 +157,5 @@ def facebook_callback(request):
         }
     )
 
-    # Generate JWT tokens
     tokens = get_tokens_for_user(user)
-
-    # Redirect to frontend with tokens
-    redirect_url = f"http://localhost:3001/oauth-callback?access={tokens['access']}&refresh={tokens['refresh']}"
-    return redirect(redirect_url)
+    return redirect(f"{FRONTEND_URL}/oauth-callback?access={tokens['access']}&refresh={tokens['refresh']}")

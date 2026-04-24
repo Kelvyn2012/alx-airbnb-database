@@ -1,5 +1,6 @@
 import uuid
 from django.db import models
+from django.db.models import Avg
 from django.core.validators import MinValueValidator
 from apps.users.models import User
 
@@ -37,10 +38,8 @@ class Property(models.Model):
 
     @property
     def average_rating(self):
-        reviews = self.reviews.all()
-        if reviews.exists():
-            return sum(review.rating for review in reviews) / reviews.count()
-        return 0
+        result = self.reviews.aggregate(avg=Avg('rating'))
+        return result['avg'] or 0
 
 
 class PropertyImage(models.Model):

@@ -41,6 +41,13 @@ class BookingCreateView(generics.CreateAPIView):
                 status=status.HTTP_404_NOT_FOUND
             )
 
+        # Validate guest count
+        if guests > property_obj.max_guests:
+            return Response(
+                {'error': f'This property allows a maximum of {property_obj.max_guests} guests'},
+                status=status.HTTP_400_BAD_REQUEST
+            )
+
         # Check availability
         overlapping = Booking.objects.filter(
             booking_property=property_obj,
@@ -88,7 +95,7 @@ class BookingDetailView(generics.RetrieveUpdateAPIView):
 
     def get_queryset(self):
         return Booking.objects.filter(
-            Q(user=self.request.user) | Q(property__host=self.request.user)
+            Q(user=self.request.user) | Q(booking_property__host=self.request.user)
         )
 
 
@@ -97,4 +104,4 @@ class HostBookingsView(generics.ListAPIView):
     permission_classes = [IsAuthenticated]
 
     def get_queryset(self):
-        return Booking.objects.filter(property__host=self.request.user)
+        return Booking.objects.filter(booking_property__host=self.request.user)

@@ -39,17 +39,28 @@ class PaymentCreateView(generics.CreateAPIView):
                 status=status.HTTP_403_FORBIDDEN
             )
 
+        if booking.status != 'pending':
+            return Response(
+                {'error': f'Booking cannot be paid — current status is \'{booking.status}\''},
+                status=status.HTTP_400_BAD_REQUEST
+            )
+
+        if serializer.validated_data['amount'] != booking.total_price:
+            return Response(
+                {'error': f'Payment amount must equal booking total of {booking.total_price}'},
+                status=status.HTTP_400_BAD_REQUEST
+            )
+
         # Create payment
         payment = Payment.objects.create(
             booking=booking,
-            amount=serializer.validated_data['amount'],
+            amount=booking.total_price,
             payment_method=serializer.validated_data['payment_method'],
             is_successful=True  # In production, integrate with Stripe/PayPal
         )
 
-        # Update booking status
-        booking.status = 'confirmed'
-        booking.save()
+        # Update booking status using update() to bypass full_clean overlap check
+        Booking.objects.filter(pk=booking.pk).update(status='confirmed')
 
         return Response(
             PaymentSerializer(payment).data,

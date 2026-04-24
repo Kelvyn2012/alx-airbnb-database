@@ -1,4 +1,5 @@
 from rest_framework import generics, filters, status
+from rest_framework.exceptions import NotFound, PermissionDenied
 from rest_framework.permissions import IsAuthenticatedOrReadOnly, IsAuthenticated
 from rest_framework.response import Response
 from django_filters.rest_framework import DjangoFilterBackend
@@ -32,10 +33,14 @@ class PropertyCreateView(generics.CreateAPIView):
 
 
 class PropertyDetailView(generics.RetrieveUpdateDestroyAPIView):
-    queryset = Property.objects.all()
-    serializer_class = PropertySerializer
+    queryset = Property.objects.filter(is_active=True)
     lookup_field = 'property_id'
     permission_classes = [IsAuthenticatedOrReadOnly]
+
+    def get_serializer_class(self):
+        if self.request.method in ('PUT', 'PATCH'):
+            return PropertyCreateSerializer
+        return PropertySerializer
 
     def update(self, request, *args, **kwargs):
         instance = self.get_object()
@@ -73,12 +78,12 @@ class PropertyImageUploadView(generics.CreateAPIView):
 
     def perform_create(self, serializer):
         property_id = self.kwargs.get('property_id')
-        property_obj = Property.objects.get(property_id=property_id)
+        try:
+            property_obj = Property.objects.get(property_id=property_id)
+        except Property.DoesNotExist:
+            raise NotFound('Property not found')
 
         if property_obj.host != self.request.user:
-            return Response(
-                {'error': 'You do not have permission to add images to this property'},
-                status=status.HTTP_403_FORBIDDEN
-            )
+            raise PermissionDenied('You do not have permission to add images to this property')
 
         serializer.save(property=property_obj)

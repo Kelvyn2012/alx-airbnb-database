@@ -20,6 +20,11 @@ class UserRegistrationSerializer(serializers.ModelSerializer):
         fields = ['email', 'password', 'password_confirm', 'first_name',
                   'last_name', 'phone_number', 'role']
 
+    def validate_role(self, value):
+        if value == 'admin':
+            raise serializers.ValidationError("Cannot self-assign admin role")
+        return value
+
     def validate(self, data):
         if data['password'] != data['password_confirm']:
             raise serializers.ValidationError("Passwords do not match")

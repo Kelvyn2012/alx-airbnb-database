@@ -101,16 +101,17 @@ class PropertyListSerializer(serializers.ModelSerializer):
     class Meta:
         model = Property
         fields = ['property_id', 'name', 'location', 'pricepernight',
-                  'bedrooms', 'bathrooms', 'max_guests', 'host_name',
-                  'primary_image', 'average_rating']
+                  'bedrooms', 'bathrooms', 'max_guests', 'is_active',
+                  'host_name', 'primary_image', 'average_rating']
 
     def get_primary_image(self, obj):
+        request = self.context.get('request')
         primary = obj.images.filter(is_primary=True).first()
         if primary:
-            return self.context['request'].build_absolute_uri(primary.image.url)
+            return request.build_absolute_uri(primary.image.url) if request else primary.image.url
         first_image = obj.images.first()
         if first_image:
-            return self.context['request'].build_absolute_uri(first_image.image.url)
+            return request.build_absolute_uri(first_image.image.url) if request else first_image.image.url
 
         # Return unique placeholder images based on property name
         image_map = {

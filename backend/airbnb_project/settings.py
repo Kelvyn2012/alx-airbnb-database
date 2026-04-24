@@ -308,8 +308,8 @@ SOCIAL_AUTH_FACEBOOK_SECRET = config('FACEBOOK_APP_SECRET', default='')
 
 # Social auth redirect URIs - dynamic based on environment
 BACKEND_URL = config('BACKEND_URL', default='http://localhost:8001')
-SOCIAL_AUTH_GOOGLE_OAUTH2_REDIRECT_URI = f'{BACKEND_URL}/api/auth/google/callback/'
-SOCIAL_AUTH_FACEBOOK_REDIRECT_URI = f'{BACKEND_URL}/api/auth/facebook/callback/'
+SOCIAL_AUTH_GOOGLE_OAUTH2_REDIRECT_URI = f'{BACKEND_URL}/api/users/auth/google/callback/'
+SOCIAL_AUTH_FACEBOOK_REDIRECT_URI = f'{BACKEND_URL}/api/users/auth/facebook/callback/'
 
 # Allauth providers
 SOCIALACCOUNT_PROVIDERS = {
